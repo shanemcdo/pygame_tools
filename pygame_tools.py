@@ -178,6 +178,12 @@ class Circle:
     def draw(self, screen: pygame.Surface):
         pygame.draw.rect(screen, self.color, self.rect, self.width, self.radius)
 
+    def collide_point(self, point: Point, only_border: bool = False) -> bool:
+        if not isinstance(point, Point):
+            point = Point._make(point)
+        dist = int(Point.distance(self.center, point))
+        return only_border and dist <= self.radius and dist >= self.radius - self.width + 1 or (not only_border and dist <= self.radius)
+
 class Button:
     """A button in a pygame application"""
 
