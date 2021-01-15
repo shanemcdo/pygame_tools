@@ -197,18 +197,27 @@ class Circle:
 
 class Particle(Circle):
 
-    def __init__(self, center: Point, radius: int, color: Color, velocity: Point, lifetime: int):
+    def __init__(self, center: Point, radius: int, color: Color, velocity: Point, lifetime: int = None, radius_decrement: int = None, frames_between_decrement: int = 1):
         super().__init__(center, radius, color)
         self.velocity = velocity
         if not isinstance(self.velocity, Point):
             self.velocity = Point._make(self.velocity)
-            self.lifetime = lifetime
+        self.lifetime = lifetime
+        self.radius_decrement = radius_decrement
+        self.radius_decrement_timer = TrueEvery(frames_between_decrement)
         self.alive = True
 
     def update(self):
         if self.alive:
-            self.center.x += self.velocity.x
-            self.center.y += self.velocity.y
+            self.center = self.center.x + self.velocity.x, self.center.y + self.velocity.y
+            if self.lifetime != None:
+                self.lifetime -= 1
+                if self.lifetime <= 0:
+                    self.alive = False
+            if self.radius_decrement != None and self.radius_decrement_timer():
+                self.radius -= self.radius_decrement
+                if self.radius <= 0:
+                    self.alive = False
 
 class Button:
     """A button in a pygame application"""
