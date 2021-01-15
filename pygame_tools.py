@@ -214,7 +214,7 @@ class Particle(Circle):
                 self.lifetime -= 1
                 if self.lifetime <= 0:
                     self.alive = False
-            if self.radius_decrement != None and self.radius_decrement_timer():
+            if self.radius_decrement != None:
                 self.radius -= self.radius_decrement
                 if self.radius <= 0:
                     self.alive = False
