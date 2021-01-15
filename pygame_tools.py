@@ -155,7 +155,7 @@ class Animation:
 class Circle:
 
     def __init__(self, center: Point, radius: int, color: Color, width: int = 0):
-        self.center = Point._make(center)
+        self._center = Point._make(center)
         self._radius = radius
         self.diameter = radius * 2
         self.color = color
@@ -175,6 +175,17 @@ class Circle:
         self.rect.h = self.diameter
         self.rect.center = self.center
 
+    @property
+    def center(self) -> Point:
+        return self._center
+
+    @center.setter
+    def center(self, center: Point):
+        self._center = center
+        if not isinstance(self._center, Point):
+            self._center = Point._make(self._center)
+        self.rect.center = self.center
+
     def draw(self, screen: pygame.Surface):
         pygame.draw.rect(screen, self.color, self.rect, self.width, self.radius)
 
@@ -183,6 +194,21 @@ class Circle:
             point = Point._make(point)
         dist = int(Point.distance(self.center, point))
         return only_border and dist <= self.radius and dist >= self.radius - self.width + 1 or (not only_border and dist <= self.radius)
+
+class Particle(Circle):
+
+    def __init__(self, center: Point, radius: int, color: Color, velocity: Point, lifetime: int):
+        super().__init__(center, radius, color)
+        self.velocity = velocity
+        if not isinstance(self.velocity, Point):
+            self.velocity = Point._make(self.velocity)
+            self.lifetime = lifetime
+        self.alive = True
+
+    def update(self):
+        if self.alive:
+            self.center.x += self.velocity.x
+            self.center.y += self.velocity.y
 
 class Button:
     """A button in a pygame application"""
