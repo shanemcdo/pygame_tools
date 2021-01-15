@@ -1,5 +1,6 @@
 import pygame
 from pygame_tools import *
+from random import randint
 
 class ParticleTest(GameScreen):
 
@@ -8,7 +9,7 @@ class ParticleTest(GameScreen):
         size = Point(600, 600)
         super().__init__(pygame.display.set_mode(size), size, (size.x // 2, size.y // 2))
         self.center = Point(self.window_size.x // 2, self.window_size.y // 2)
-        self.particles = [Particle(self.center, 10, 'grey', (1, 0), None, 1, 4)]
+        self.particles = [Particle(self.center, 5, 'grey', (1, -3), None, 1, 4)]
 
     def update(self):
         super().update()
@@ -20,6 +21,10 @@ class ParticleTest(GameScreen):
                 self.particles[i].update()
                 self.particles[i].draw(self.screen)
                 i += 1
+        self.add_particle()
+
+    def add_particle(self):
+        self.particles.append(Particle(self.center, randint(4, 12), 'gray', (randint(-3, 3), randint(-3, 3)), None, 1, randint(2, 6)))
 
 if __name__ == '__main__':
     ParticleTest().run()
