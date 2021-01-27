@@ -239,7 +239,7 @@ class Button:
             ):
         self.action = action
         self.text = text
-        self.rect = rect
+        self.rect = rect if isinstance(rect, Rect) else Rect(rect)
         self.font = font
         self.rect_color = rect_color
         self.font_color = font_color
