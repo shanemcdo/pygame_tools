@@ -1,0 +1,20 @@
+# PyGame Tools
+
+This is a package designed to make development in pygame easier my creating some classes that handle alot of the loop
+
+The most important class `GameScreen` is a class that represents a 'screen' in the game and is meant to be inherited to be used.
+
+```python
+class Example(GameScreen):
+    def __init__(self):
+        pygame.init()
+        real_size = Point(600, 600) # size of window itself
+        size = Point(real_size.x / 40, real_size.y / 40) # 1 pixel for every 40
+        super().__init__(pygame.display.set_mode(real_size), real_size, size)
+
+    def update(self):
+        pygame.draw.line(self.screen, (255, 255, 255), (0, self.window_size.y / 2), (self.window_size.x, self.window_size.y / 2))
+
+example = Example()
+example.run()
+```
