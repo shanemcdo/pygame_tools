@@ -2,6 +2,10 @@
 
 This is a package designed to make development in pygame easier my creating some classes that handle alot of the loop
 
+#@ installation
+
+`pip install pygame-tools`
+
 The most important class `GameScreen` is a class that represents a 'screen' in the game and is meant to be inherited to be used.
 
 ```python
