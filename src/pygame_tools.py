@@ -1,6 +1,7 @@
 """Basic classes for creating a pygame application"""
 
 import pygame, math, sys
+from typing import List
 from glob import glob
 from pygame.locals import *
 from recordclass import RecordClass
@@ -469,3 +470,64 @@ class MenuScreen(GameScreen):
                 if button.rect.collidepoint(mouse_pos):
                     self.button_index = i
                     button()
+
+class TextBox:
+    def __init__(
+            self,
+            text: List[str],
+            rect: pygame.Rect,
+            bg_color: pygame.Color = 'grey',
+            text_color: pygame.Color = 'black',
+            border_radius: int = 10,
+            padding: Point = None,
+            font: pygame.font.Font = None
+        ):
+        self.text = text
+        self.rect = rect
+        self.bg_color = bg_color
+        self.text_color = text_color
+        self.border_radius = border_radius
+        self.padding = padding if padding is not None else Point(10, 10)
+        self.font = font if font is not None else pygame.font.SysFont(pygame.font.get_default_font(), 20)
+        self.text_arr_size = len(self.text)
+        self.text_index = 0
+        self.done = False
+        self.font_height = self.font.size('Tg')[1]
+
+    def draw(self, screen: pygame.Surface):
+        '''
+        draw the text box to the screen
+        :screen: the screen to draw to
+        '''
+        if self.done:
+            return
+        pygame.draw.rect(screen, self.bg_color, self.rect, 0, self.border_radius)
+        self.draw_text(screen)
+
+    def draw_text(self, screen: pygame.Surface):
+        '''
+        draw text with wrapping
+        https://www.pygame.org/wiki/TextWrap
+        above link heavily referenced
+        :screen: the screen to draw to
+        '''
+        y = 0
+        text = self.text[self.text_index]
+        text_len = len(text)
+        while text:
+            i = 1
+            while self.font.size(text[:i])[0] < self.rect.w and i < text_len:
+                i += 1
+            if i < text_len:
+                i = text.rfind(' ', 0, i) + 1
+            screen.blit(
+                self.font.render(text[:i], True, self.text_color),
+                (self.rect.x + self.padding.x, self.rect.y + self.padding.y + y)
+            )
+            text = text[i:]
+            y += self.font_height
+
+    def update(self):
+        self.text_index += 1
+        if self.text_index >= self.text_arr_size:
+            self.done = True
