@@ -472,6 +472,10 @@ class MenuScreen(GameScreen):
                     button()
 
 class TextBox:
+    '''
+    A text box that displays text for the user
+    ... in a box
+    '''
     def __init__(
             self,
             text: List[str],
@@ -528,6 +532,9 @@ class TextBox:
             y += self.font_height
 
     def update(self):
+        '''
+        increment the text index to move to the second slide
+        '''
         self.text_index += 1
         if self.text_index >= self.text_arr_size:
             self.done = True
