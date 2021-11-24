@@ -61,13 +61,25 @@ class Point(RecordClass):
     y: float
 
     @staticmethod
-    def distance(pos1: 'Point', pos2: 'Point') -> 'Point':
-        """takes two points and returns the distance between then in point format"""
+    def distance(pos1: 'Point', pos2: 'Point') -> float:
+        """takes two points and returns the distance between then"""
         if not isinstance(pos1, Point):
             pos1 = Point._make(pos1)
         if not isinstance(pos2, Point):
             pos2 = Point._make(pos2)
         return math.sqrt((pos2.x - pos1.x) ** 2 + (pos2.y - pos1.y) ** 2)
+
+    @staticmethod
+    def distance_from_line(start: 'Point', end: 'Point', point: 'Point') -> float:
+        '''
+        measure the distance between a point and a line
+        used https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line as a reference
+        :start: the start of the line
+        :end: the end of the line
+        :point: the point to measure
+        :returns: the distance between the line and the point
+        '''
+        return abs((end.x - start.x) * (start.y - point.y) - (start.x - point.x) * (end.y - start.y)) / math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
 
 def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
     """Copy part of a pygame.Surface"""
