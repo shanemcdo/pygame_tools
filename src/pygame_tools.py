@@ -1,10 +1,13 @@
 """Basic classes for creating a pygame application"""
 
 import pygame, math, sys
+from string import printable as _printable
 from typing import List
 from glob import glob
 from pygame.locals import *
 from recordclass import RecordClass
+
+printable = _printable.strip() + ' '
 
 class TrueEvery:
     """This is a functor that creates a function that returns true once every {self.count} calls"""
@@ -596,11 +599,13 @@ class InputBox(TextBox):
         if event.type != KEYDOWN:
             return
         match event.unicode.lower():
+            case '\x1b': # escape
+                self.reset()
             case '\r': # enter
                 self.done = True
             case '\x08': # backspace
                 self.text[0] = self.text[0][:-1]
-            case _:
+            case key if key in printable:
                 self.text[0] += event.unicode
 
     def reset(self):
