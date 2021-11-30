@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import pygame
 from pygame_tools import *
 from random import randint
