@@ -532,7 +532,7 @@ class TextBox:
         text_len = len(text)
         while text:
             i = 1
-            while self.font.size(text[:i])[0] < self.rect.w and i < text_len:
+            while self.font.size(text[:i])[0] < self.rect.w - self.padding.x * 2 and i < text_len:
                 i += 1
             if i < text_len:
                 i = text.rfind(' ', 0, i) + 1
