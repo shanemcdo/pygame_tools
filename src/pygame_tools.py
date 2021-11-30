@@ -550,3 +550,37 @@ class TextBox:
         self.text_index += 1
         if self.text_index >= self.text_arr_size:
             self.done = True
+
+class InputBox(TextBox):
+    '''
+    A TextBox that updates with input taken
+    '''
+    def __init__(
+            self,
+            rect: pygame.Rect,
+            bg_color: pygame.Color = 'grey',
+            text_color: pygame.Color = 'black',
+            border_radius: int = 10,
+            padding: Point = None,
+            font: pygame.font.Font = None
+        ):
+        super().__init__(
+            [''],
+            rect,
+            bg_color,
+            text_color,
+            border_radius,
+            padding,
+            font,
+        )
+
+    def update(self, event: pygame.event.Event):
+        if event.type != KEYDOWN:
+            return
+        match event.unicode.lower():
+            case '\r': # enter
+                self.done = True
+            case '\x08': # backspace
+                self.text[0] = self.text[0][:-1]
+            case unicode:
+                self.text[0] += unicode
