@@ -496,7 +496,8 @@ class TextBox:
             text_color: pygame.Color = 'black',
             border_radius: int = 10,
             padding: Point = None,
-            font: pygame.font.Font = None
+            font: pygame.font.Font = None,
+            center_text: bool = False
         ):
         self.text = text
         self.rect = rect
@@ -505,10 +506,15 @@ class TextBox:
         self.border_radius = border_radius
         self.padding = padding if padding is not None else Point(10, 10)
         self.font = font if font is not None else pygame.font.SysFont(pygame.font.get_default_font(), 20)
+        self.center_text = center_text
         self.text_arr_size = len(self.text)
         self.text_index = 0
         self.done = False
         self.font_height = self.font.size('Tg')[1]
+        self.center = Point(
+            self.rect.x + self.padding.x + (self.rect.w - self.padding.x * 2) / 2,
+            self.rect.y + self.padding.y + (self.rect.h - self.padding.y * 2) / 2
+        )
 
     def draw(self, screen: pygame.Surface):
         '''
@@ -537,10 +543,14 @@ class TextBox:
             if i < text_len:
                 new_i = text.rfind(' ', 0, i) + 1 # attempt to find the farthest space
                 if new_i: # space is found
-                    i = new_i # use found index for word wrappign
+                    i = new_i # use found index for word wrapping
+            size = Point(*self.font.size(text[:i]))
             screen.blit(
                 self.font.render(text[:i], True, self.text_color),
-                (self.rect.x + self.padding.x, self.rect.y + self.padding.y + y)
+                (
+                    self.center.x - size.x // 2 if self.center_text else self.rect.x + self.padding.x,
+                    self.rect.y + self.padding.y + y
+                )
             )
             text = text[i:]
             y += self.font_height
@@ -564,7 +574,8 @@ class InputBox(TextBox):
             text_color: pygame.Color = 'black',
             border_radius: int = 10,
             padding: Point = None,
-            font: pygame.font.Font = None
+            font: pygame.font.Font = None,
+            center_text: bool = False,
         ):
         super().__init__(
             [''],
@@ -574,6 +585,7 @@ class InputBox(TextBox):
             border_radius,
             padding,
             font,
+            center_text,
         )
 
     def update(self, event: pygame.event.Event):
