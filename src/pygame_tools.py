@@ -577,6 +577,10 @@ class InputBox(TextBox):
         )
 
     def update(self, event: pygame.event.Event):
+        '''
+        this will update the text with an appropriately depending on the key pressed
+        :event: the KEYDOWN event to be evaluated
+        '''
         if event.type != KEYDOWN:
             return
         match event.unicode.lower():
@@ -584,5 +588,20 @@ class InputBox(TextBox):
                 self.done = True
             case '\x08': # backspace
                 self.text[0] = self.text[0][:-1]
-            case unicode:
-                self.text[0] += unicode
+            case _:
+                self.text[0] += event.unicode
+
+    def reset(self):
+        '''
+        reset the text to be blank again
+        '''
+        self.done = False
+        self.text[0] = ''
+        self.text_index = 0
+
+    def get_value(self) -> str:
+        '''
+        get the value of the text entered
+        :returns: the text entered
+        '''
+        return self.text[0]
