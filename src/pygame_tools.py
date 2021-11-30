@@ -535,7 +535,9 @@ class TextBox:
             while self.font.size(text[:i])[0] < self.rect.w - self.padding.x * 2 and i < text_len:
                 i += 1
             if i < text_len:
-                i = text.rfind(' ', 0, i) + 1
+                new_i = text.rfind(' ', 0, i) + 1 # attempt to find the farthest space
+                if new_i: # space is found
+                    i = new_i # use found index for word wrappign
             screen.blit(
                 self.font.render(text[:i], True, self.text_color),
                 (self.rect.x + self.padding.x, self.rect.y + self.padding.y + y)
