@@ -2,7 +2,7 @@
 
 This is a package designed to make development in pygame easier my creating some classes that handle alot of the loop
 
-#@ installation
+## installation
 
 `pip install pygame-tools`
 
