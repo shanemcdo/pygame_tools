@@ -60,8 +60,72 @@ class TrueEvery:
         return False
 
 class Point(RecordClass):
-    x: float
-    y: float
+    x: int | float
+    y: int | float
+
+    def __neg__(self) -> 'Point':
+        '''
+        take the negative of a Point
+        '''
+        return Point(-self.x, -self.y)
+
+    def __add__(self, pos: 'Point') -> 'Point':
+        '''add two points'''
+        if not isinstance(pos, Point):
+            pos = Point._make(pos)
+        return Point(self.x + pos.x, self.y + pos.y)
+
+    def __radd__(self, pos: 'Point') -> 'Point':
+        '''add two points'''
+        return self + pos
+
+    def __sub__(self, pos: 'Point') -> 'Point':
+        '''subtract self from pos'''
+        if not isinstance(pos, Point):
+            pos = Point._make(pos)
+        return self + (-pos)
+
+    def __rsub__(self, pos: 'Point') -> 'Point':
+        '''subtract self from pos'''
+        return -self + pos
+
+    def __mul__(self, other: float | int) -> 'Point':
+        '''Multiply x and y by other'''
+        return Point(self.x * other, self.y * other)
+
+    def __rmul__(self, other: float | int) -> 'Point':
+        '''Multiply x and y by other'''
+        return self * other
+
+    def __truediv__(self, other: float | int) -> 'Point':
+        '''Divide x and y by other'''
+        return Point(self.x / other, self.y / other)
+
+    def __rtruediv__(self, other: float | int) -> 'Point':
+        '''Divide other by x and y'''
+        return Point(other / self.x, other / self.y)
+
+    def __floordiv__(self, other: float | int) -> 'Point':
+        '''Divide x and y by other and round down'''
+        return Point(self.x // other, self.y // other)
+
+    def __rfloordiv__(self, other: float | int) -> 'Point':
+        '''Divide other by x and y and round down'''
+        return Point(other // self.x, other // self.y)
+
+    def __floor__(self) -> 'Point':
+        '''round down on x and y'''
+        return Point(math.floor(self.x), math.floor(self.y))
+
+    def __ceil__(self) -> 'Point':
+        '''round up on x and y'''
+        return Point(math.ceil(self.x), math.ceil(self.y))
+
+    def __eq__(self, pos: 'Point') -> bool:
+        '''check if two poits are equal'''
+        if not isinstance(pos, Point):
+            pos = Point._make(pos)
+        return self.x == pos.x and self.y == pos.y
 
     @staticmethod
     def distance(pos1: 'Point', pos2: 'Point') -> float:
@@ -82,6 +146,12 @@ class Point(RecordClass):
         :point: the point to measure
         :returns: the distance between the line and the point
         '''
+        if not isinstance(start, Point):
+            start = Point._make(start)
+        if not isinstance(end, Point):
+            end = Point._make(end)
+        if not isinstance(point, Point):
+            point = Point._make(point)
         return abs((end.x - start.x) * (start.y - point.y) - (start.x - point.x) * (end.y - start.y)) / math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
 
 def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
