@@ -17,14 +17,19 @@ class TestPoint(unittest.TestCase):
         self.assertEqual((4, 2) - Point(2, 1), Point(2, 1))
 
     def test_mul(self):
-        self.assertEqual(Point(1, 2) * 3, Point(3, 6))
+        self.assertEqual(Point(1, 2) * 3.1, Point(3.1, 6.2))
         self.assertEqual(2 *  Point(1, 3), Point(2, 6))
+        self.assertEqual(Point(2, 3) * (3, 1), (6, 3))
 
     def test_div(self):
         self.assertEqual(Point(5, 4) / 2, Point(2.5, 2))
         self.assertEqual(10 /  Point(2, 4), Point(5, 2.5))
+        self.assertEqual(Point(3, 2) / (2, 3), (3 / 2, 2 / 3))
+        self.assertEqual((3, 1) / Point(4, 3), (3 / 4, 1 / 3))
         self.assertEqual(Point(5, 4) // 2, Point(2, 2))
         self.assertEqual(10 //  Point(2, 4), Point(5, 2))
+        self.assertEqual(Point(3, 2) // (2, 3), (3 // 2, 2 // 3))
+        self.assertEqual((3, 1) // Point(4, 3), (3 // 4, 1 // 3))
 
     def test_floor_ceil(self):
         p = Point(1.5, 2.5)

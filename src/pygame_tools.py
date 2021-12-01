@@ -59,76 +59,99 @@ class TrueEvery:
         self.reset()
         return False
 
+class Point: #forward declaration
+    pass
+
 class Point(RecordClass):
     x: int | float
     y: int | float
 
-    def __neg__(self) -> 'Point':
+    def __neg__(self) -> Point:
         '''
         take the negative of a Point
         '''
         return Point(-self.x, -self.y)
 
-    def __add__(self, pos: 'Point') -> 'Point':
+    def __add__(self, pos: Point) -> Point:
         '''add two points'''
         if not isinstance(pos, Point):
             pos = Point._make(pos)
         return Point(self.x + pos.x, self.y + pos.y)
 
-    def __radd__(self, pos: 'Point') -> 'Point':
+    def __radd__(self, pos: Point) -> Point:
         '''add two points'''
         return self + pos
 
-    def __sub__(self, pos: 'Point') -> 'Point':
+    def __sub__(self, pos: Point) -> Point:
         '''subtract self from pos'''
         if not isinstance(pos, Point):
             pos = Point._make(pos)
         return self + (-pos)
 
-    def __rsub__(self, pos: 'Point') -> 'Point':
+    def __rsub__(self, pos: Point) -> Point:
         '''subtract self from pos'''
         return -self + pos
 
-    def __mul__(self, other: float | int) -> 'Point':
+    def __mul__(self, other: float | int | Point) -> Point:
         '''Multiply x and y by other'''
-        return Point(self.x * other, self.y * other)
+        if isinstance(other, float| int):
+            return Point(self.x * other, self.y * other)
+        if not isinstance(other, Point):
+            other = Point._make(other)
+        return Point(self.x * other.x, self.y * other.y)
 
-    def __rmul__(self, other: float | int) -> 'Point':
+    def __rmul__(self, other: float | int | Point) -> Point:
         '''Multiply x and y by other'''
         return self * other
 
-    def __truediv__(self, other: float | int) -> 'Point':
+    def __truediv__(self, other: float | int | Point) -> Point:
         '''Divide x and y by other'''
-        return Point(self.x / other, self.y / other)
+        if isinstance(other, float | int):
+            return Point(self.x / other, self.y / other)
+        if not isinstance(other, Point):
+            other = Point._make(other)
+        return Point(self.x / other.x, self.y / other.y)
 
-    def __rtruediv__(self, other: float | int) -> 'Point':
+    def __rtruediv__(self, other: float | int | Point) -> Point:
         '''Divide other by x and y'''
-        return Point(other / self.x, other / self.y)
+        if isinstance(other, float | int):
+            return Point(other / self.x, other / self.y)
+        if not isinstance(other, Point):
+            other = Point._make(other)
+        return Point(other.x / self.x, other.y / self.y)
 
-    def __floordiv__(self, other: float | int) -> 'Point':
+    def __floordiv__(self, other: float | int | Point) -> Point:
         '''Divide x and y by other and round down'''
-        return Point(self.x // other, self.y // other)
+        if isinstance(other, float | int):
+            return Point(self.x // other, self.y // other)
+        if not isinstance(other, Point):
+            other = Point._make(other)
+        return Point(self.x // other.x, self.y // other.y)
 
-    def __rfloordiv__(self, other: float | int) -> 'Point':
+    def __rfloordiv__(self, other: float | int | Point) -> Point:
         '''Divide other by x and y and round down'''
-        return Point(other // self.x, other // self.y)
+        if isinstance(other, float | int):
+            return Point(other // self.x, other // self.y)
+        if not isinstance(other, Point):
+            other = Point._make(other)
+        return Point(other.x // self.x, other.y // self.y)
 
-    def __floor__(self) -> 'Point':
+    def __floor__(self) -> Point:
         '''round down on x and y'''
         return Point(math.floor(self.x), math.floor(self.y))
 
-    def __ceil__(self) -> 'Point':
+    def __ceil__(self) -> Point:
         '''round up on x and y'''
         return Point(math.ceil(self.x), math.ceil(self.y))
 
-    def __eq__(self, pos: 'Point') -> bool:
+    def __eq__(self, pos: Point) -> bool:
         '''check if two poits are equal'''
         if not isinstance(pos, Point):
             pos = Point._make(pos)
         return self.x == pos.x and self.y == pos.y
 
     @staticmethod
-    def distance(pos1: 'Point', pos2: 'Point') -> float:
+    def distance(pos1: Point, pos2: Point) -> float:
         """takes two points and returns the distance between then"""
         if not isinstance(pos1, Point):
             pos1 = Point._make(pos1)
@@ -137,7 +160,7 @@ class Point(RecordClass):
         return math.sqrt((pos2.x - pos1.x) ** 2 + (pos2.y - pos1.y) ** 2)
 
     @staticmethod
-    def distance_from_line(start: 'Point', end: 'Point', point: 'Point') -> float:
+    def distance_from_line(start: Point, end: Point, point: Point) -> float:
         '''
         measure the distance between a point and a line
         used https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line as a reference
@@ -171,7 +194,7 @@ class Animation:
             def __init__(self):
                 pygame.init()
                 size = Point(300, 300)
-                real_size = Point(size.x * 2, size.y * 2)
+                real_size = size * 2
                 screen = pygame.display.set_mode(real_size)
                 super().__init__(screen, real_size, size)
 
@@ -428,7 +451,7 @@ class GameScreen:
             def __init__(self):
                 pygame.init()
                 real_size = Point(600, 600) # size of window itself
-                size = Point(real_size.x / 40, real_size.y / 40) # 1 pixel for every 40
+                size = real_size / 40 # 1 pixel for every 40
                 super().__init__(pygame.display.set_mode(real_size), real_size, size)
 
             def update(self):
