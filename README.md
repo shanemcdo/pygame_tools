@@ -16,7 +16,7 @@ class Example(GameScreen):
     def __init__(self):
         pygame.init()
         real_size = Point(600, 600) # size of window itself
-        size = Point(real_size.x / 40, real_size.y / 40) # 1 pixel for every 40
+        size = real_size / 40 # 1 pixel for every 40
         super().__init__(pygame.display.set_mode(real_size), real_size, size)
 
     def update(self):
