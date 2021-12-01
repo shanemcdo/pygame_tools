@@ -475,7 +475,7 @@ class GameScreen:
         self.screen = screen if not self.window_scaled else pygame.Surface(window_size)
         self.real_window_size = Point._make(real_window_size)
         self.window_size = Point._make(window_size if self.window_scaled else real_window_size)
-        self.window_scale = Point(self.real_window_size.x // self.window_size.x, self.real_window_size.y // self.window_size.y)
+        self.window_scale = self.real_window_size // self.window_size
         self.frame_rate = frame_rate
         self.running = False
         self.rect = self.screen.get_rect()
@@ -484,7 +484,7 @@ class GameScreen:
 
     def get_scaled_mouse_pos(self) -> Point:
         pos = pygame.mouse.get_pos()
-        return Point(pos[0] // self.window_scale.x, pos[1] // self.window_scale.y)
+        return pos // self.window_scale
 
     def tick(self):
         self.clock.tick(self.frame_rate)

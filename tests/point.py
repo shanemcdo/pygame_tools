@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
 import pygame
-import sys
-sys.path.append('/Users/shane/coding/python/pygame_tools/')
-from src.pygame_tools import *
-# from pygame_tools import *
+from pygame_tools import *
 import unittest
 
 class TestPoint(unittest.TestCase):
