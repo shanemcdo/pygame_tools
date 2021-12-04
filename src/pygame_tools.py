@@ -183,6 +183,30 @@ def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
     cropped.blit(surface, (0, 0), rect)
     return cropped
 
+def get_bezier_curve_points(p0: Point, p1: Point, p2: Point, density: int) -> List[Point]:
+    '''
+    calculates the points for a quadratic bezier curve
+    :p0: the first point in the bezier curve
+    :p1: the point in the curves direction
+    :p2: the last point in the bezier curve
+    :density: number of Points in the returned list
+    :returns: a list of points for the bezier curve
+    '''
+    if not isinstance(p0, Point):
+        p0 = Point._make(p0)
+    if not isinstance(p1, Point):
+        p1 = Point._make(p1)
+    if not isinstance(p2, Point):
+        p2 = Point._make(p2)
+    result = []
+    for i in range(density+1):
+        t = i / density
+        result.append(Point(
+            (1 - t) ** 2 * p0.x + 2 * (1 - t) * t * p1.x + t ** 2 * p2.x,
+            (1 - t) ** 2 * p0.y + 2 * (1 - t) * t * p1.y + t ** 2 * p2.y
+            ))
+    return result
+
 class Animation:
     """
     Represents a object that has multiple frames each with diffrent length
