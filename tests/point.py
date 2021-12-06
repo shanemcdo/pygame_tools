@@ -5,6 +5,11 @@ from pygame_tools import *
 import unittest
 
 class TestPoint(unittest.TestCase):
+    def test_neg(self):
+        self.assertEqual(-Point(1, 2), (-1, -2))
+        self.assertEqual(-Point(-1, 0), (1, 0))
+        self.assertEqual(-Point(-1, -1), (1, 1))
+
     def test_add(self):
         self.assertEqual(Point(1, 2) + 5, (6, 7))
         self.assertEqual(4 + Point(4, 2), (8, 6))

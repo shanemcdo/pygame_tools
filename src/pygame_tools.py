@@ -63,8 +63,8 @@ class Point: #forward declaration
     pass
 
 class Point(RecordClass):
-    x: float | int
-    y: float | int
+    x: int | float
+    y: int | float
 
     def __neg__(self) -> Point:
         '''
@@ -72,9 +72,9 @@ class Point(RecordClass):
         '''
         return Point(-self.x, -self.y)
 
-    def __add__(self, other: float | int | Point) -> Point:
+    def __add__(self, other: int | float | Point) -> Point:
         '''add two points'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(self.x + other, self.y + other)
         if not isinstance(other, Point):
             try:
@@ -83,23 +83,23 @@ class Point(RecordClass):
                 return NotImplemented
         return Point(self.x + other.x, self.y + other.y)
 
-    def __radd__(self, other: float | int | Point) -> Point:
+    def __radd__(self, other: int | float | Point) -> Point:
         '''add two points'''
         return self + other
 
-    def __sub__(self, other: float | int | Point) -> Point:
+    def __sub__(self, other: int | float | Point) -> Point:
         '''subtract self from other'''
-        if not isinstance(other, float | int) and not isinstance(other, Point):
+        if not isinstance(other, int | float) and not isinstance(other, Point):
             other = Point._make(other)
         return self + (-other)
 
-    def __rsub__(self, other: float | int | Point) -> Point:
+    def __rsub__(self, other: int | float | Point) -> Point:
         '''subtract self from other'''
         return -self + other
 
-    def __mul__(self, other: float | int | Point) -> Point:
+    def __mul__(self, other: int | float | Point) -> Point:
         '''Multiply x and y by other'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(self.x * other, self.y * other)
         if not isinstance(other, Point):
             try:
@@ -108,13 +108,13 @@ class Point(RecordClass):
                 return NotImplemented
         return Point(self.x * other.x, self.y * other.y)
 
-    def __rmul__(self, other: float | int | Point) -> Point:
+    def __rmul__(self, other: int | float | Point) -> Point:
         '''Multiply x and y by other'''
         return self * other
 
-    def __truediv__(self, other: float | int | Point) -> Point:
+    def __truediv__(self, other: int | float | Point) -> Point:
         '''Divide x and y by other'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(self.x / other, self.y / other)
         if not isinstance(other, Point):
             try:
@@ -123,9 +123,9 @@ class Point(RecordClass):
                 return NotImplemented
         return Point(self.x / other.x, self.y / other.y)
 
-    def __rtruediv__(self, other: float | int | Point) -> Point:
+    def __rtruediv__(self, other: int | float | Point) -> Point:
         '''Divide other by x and y'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(other / self.x , other / self.y)
         if not isinstance(other, Point):
             try:
@@ -134,9 +134,9 @@ class Point(RecordClass):
                 return NotImplemented
         return Point(other.x / self.x, other.y / self.y)
 
-    def __floordiv__(self, other: float | int | Point) -> Point:
+    def __floordiv__(self, other: int | float | Point) -> Point:
         '''Divide x and y by other and round down'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(self.x // other, self.y // other)
         if not isinstance(other, Point):
             try:
@@ -145,9 +145,9 @@ class Point(RecordClass):
                 return NotImplemented
         return Point(self.x // other.x, self.y // other.y)
 
-    def __rfloordiv__(self, other: float | int | Point) -> Point:
+    def __rfloordiv__(self, other: int | float | Point) -> Point:
         '''Divide other by x and y and round down'''
-        if isinstance(other, float | int):
+        if isinstance(other, int | float):
             return Point(other // self.x , other // self.y)
         if not isinstance(other, Point):
             try:
