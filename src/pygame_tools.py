@@ -1,4 +1,4 @@
-"""Basic classes for creating a pygame application"""
+'''Basic classes for creating a pygame application'''
 
 import pygame, math, sys
 from string import printable as _printable
@@ -10,15 +10,15 @@ from recordclass import RecordClass
 printable = _printable.strip() + ' '
 
 class TrueEvery:
-    """This is a functor that creates a function that returns true once every {self.count} calls"""
+    '''This is a functor that creates a function that returns true once every {self.count} calls'''
 
     def __init__(self, count: int, initial_count: int = None, once: bool = False, start_value: int = 0):
-        """
+        '''
         :count: the number of times {self.__call__} must be called to return true once
         :initial_count: Optional. defaults to {self.count}. the number of times {self._call__} must be called to return True after the first call
         :once: Optional. defaults to False. the value
         :start_value: Optional. defaults to 0. the value that the offset starts at before the current call
-        """
+        '''
         self.count = count
         self.initial_count = initial_count if initial_count != None else count
         self.once = once
@@ -26,11 +26,11 @@ class TrueEvery:
         self.first_call = True
 
     def __call__(self) -> bool:
-        """
+        '''
         Override () operator
         :returns: true once every {self.count} calls
             always returns true first time run unless start_value is set to something different
-        """
+        '''
         # TODO: refactor this
         if not self.first_call and self.once:
             return False
@@ -41,19 +41,19 @@ class TrueEvery:
             return True
 
     def reset(self, override_start_value: int = None):
-        """
+        '''
         reset {self.calls}, and {self.first_call}
         :override_start_value: Optional. Defaults to self.start_value. set a new start value instead of the one in the constructor
-        """
+        '''
         self.calls = override_start_value if override_start_value != None else self.start_value
         self.first_call = True
 
     def run_or_reset(self, boolean: bool) -> bool:
-        """
+        '''
         :boolean: the boolean to be evaluated. If this boolean is True the {self.__call__} is called.
             If the boolean is False it calls {self.reset}
         :returns: a bool. It returns the result of call if {boolean} is True. or it returns False if {boolean} is False
-        """
+        '''
         if boolean:
             return self()
         self.reset()
@@ -175,7 +175,7 @@ class Point(RecordClass):
 
     @staticmethod
     def distance(pos1: Point, pos2: Point) -> float:
-        """takes two points and returns the distance between then"""
+        '''takes two points and returns the distance between then'''
         if not isinstance(pos1, Point):
             pos1 = Point._make(pos1)
         if not isinstance(pos2, Point):
@@ -201,7 +201,7 @@ class Point(RecordClass):
         return abs((end.x - start.x) * (start.y - point.y) - (start.x - point.x) * (end.y - start.y)) / math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
 
 def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
-    """Copy part of a pygame.Surface"""
+    '''Copy part of a pygame.Surface'''
     cropped = pygame.Surface(rect.size)
     cropped.blit(surface, (0, 0), rect)
     return cropped
@@ -231,7 +231,7 @@ def get_bezier_curve_points(p0: Point, p1: Point, p2: Point, density: int) -> Li
     return result
 
 class Animation:
-    """
+    '''
     Represents a object that has multiple frames each with diffrent length
     :example:
 
@@ -251,9 +251,9 @@ class Animation:
                 a.update()
 
         Example().run()
-    """
+    '''
     def __init__(self, glob_path: str, frame_data: [int], repititions: int = None):
-        """
+        '''
         :glob_path: the path that glob is called on.
             e.g.: 'assets/animations/*' to get every file in assets/animations
         :frame_data: how long a frame of the animation should be displayed in game frames
@@ -261,7 +261,7 @@ class Animation:
             this must be the same length as the number of items from glob_path
         :repititions: Optional. defaults to None. if repititions is none, it repeats forever.
             if this number is an int, it decrements every time update is called until it is zero
-        """
+        '''
         self.glob_path = glob_path
         self.frame_data = frame_data
         self.repititions = repititions
@@ -269,9 +269,9 @@ class Animation:
         self.load(glob_path, frame_data)
 
     def update(self):
-        """
+        '''
         Indicate a frame has passed
-        """
+        '''
         if not self.finished:
             self.frames_until_next -= 1
             if self.frames_until_next == 0:
@@ -283,23 +283,23 @@ class Animation:
                         self.finished = True
 
     def get_surface(self) -> pygame.Surface:
-        """return the frame of the current index"""
+        '''return the frame of the current index'''
         return self.frames[self.frame_index][0]
 
     def reset(self):
-        """Restart the animation to the start of the loop"""
+        '''Restart the animation to the start of the loop'''
         self.frame_index = 0
         self.frames_until_next = self.frames[0][1]
 
     def load(self, glob_path: str, frame_data):
-        """
+        '''
         Load animations from a glob path
         :glob_path: the path that glob is called on.
             e.g.: 'assets/animations/*' to get every file in assets/animations
         :frame_data: how long a frame of the animation should be displayed in game frames
             e.g.: [7, 8, 9] first image found in glob_path lasts 7, the next lasts 8, and the third lasts 9
             this must be the same length as the number of items from glob_path
-        """
+        '''
         file_names = glob(glob_path)
         if len(file_names) != len(frame_data):
             raise ValueError('Length of frame_data and the number of files must be the same')
@@ -376,7 +376,7 @@ class Particle(Circle):
                     self.alive = False
 
 class Button:
-    """A button in a pygame application"""
+    '''A button in a pygame application'''
 
     def __init__(
             self,
@@ -418,13 +418,13 @@ class Button:
         screen.blit(text_obj, (self.rect.centerx - text_size[0] / 2, self.rect.centery - text_size[1] / 2))
 
     def __call__(self):
-        """Overwrite the () operator on the button object"""
+        '''Overwrite the () operator on the button object'''
         if self.action:
             self.action()
         self.clicked = True
 
 class ToggleButton:
-    """When clickd this button will change its color, text, and also call target"""
+    '''When clickd this button will change its color, text, and also call target'''
 
     def __init__(
             self,
@@ -482,13 +482,13 @@ class ToggleButton:
             screen.blit(text_obj, (self.rect.centerx - text_size[0] / 2, self.rect.centery - text_size[1] / 2))
 
     def __call__(self):
-        """override the ()"""
+        '''override the ()'''
         if self.action:
             self.action()
         self.toggled = not self.toggled
 
 class GameScreen:
-    """
+    '''
     A class to reperesent a screen inside a pygame application
     e.g.: menu, pause screen, or main screen
     to use this class, inherit it and overwrite some/all of its functions
@@ -506,17 +506,17 @@ class GameScreen:
 
         example = Example()
         example.run()
-    """
+    '''
 
     def __init__(self, screen: pygame.Surface, real_window_size: Point, window_size: Point = None, frame_rate: int = 30):
-        """
+        '''
         :screen: The pygame surface that will be drawn onto
         :real_window_size: The height and width of the screen in real computer pixels
         :window_size: The height and width of the screen in game pixels pixels
             if this is smaller than real_window_size the pixels become larger
             if this is larger than real_window_size the pixels become smaller
         :frame_rate: The desired frame rate of the current screen
-        """
+        '''
         self.window_scaled = bool(window_size) and window_size != real_window_size
         self.real_screen = screen
         self.screen = screen if not self.window_scaled else pygame.Surface(window_size)
@@ -540,19 +540,19 @@ class GameScreen:
             self.game_ticks = 0
 
     def key_down(self, event: pygame.event.Event):
-        """Function called when a pygame KEYDOWN event is triggered"""
+        '''Function called when a pygame KEYDOWN event is triggered'''
 
     def key_up(self, event: pygame.event.Event):
-        """Function called when a pygame KEYUP event is triggered"""
+        '''Function called when a pygame KEYUP event is triggered'''
 
     def mouse_button_down(self, event: pygame.event.Event):
-        """Function called when a pygame MOUSEBUTTONDOWN event is triggered"""
+        '''Function called when a pygame MOUSEBUTTONDOWN event is triggered'''
 
     def mouse_button_up(self, event: pygame.event.Event):
-        """Function called when a pygame key_down MOUSEBUTTONDOWN is triggered"""
+        '''Function called when a pygame key_down MOUSEBUTTONDOWN is triggered'''
 
     def handle_event(self, event: pygame.event.Event):
-        """Handle a pygame events"""
+        '''Handle a pygame events'''
         if event.type == QUIT:
             sys.exit()
         elif event.type == KEYDOWN:
@@ -565,11 +565,11 @@ class GameScreen:
             self.mouse_button_up(event)
 
     def update(self):
-        """Run every frame, meant for drawing and update logic"""
+        '''Run every frame, meant for drawing and update logic'''
         self.screen.fill((0, 0, 100))
 
     def run(self):
-        """Run the main loop"""
+        '''Run the main loop'''
         self.running = True
         while self.running:
             for event in pygame.event.get():
@@ -581,10 +581,10 @@ class GameScreen:
             self.tick()
 
 class MenuScreen(GameScreen):
-    """
+    '''
     A class to represent a menu screen inside a pygame application
     e.g.: Main menu, Pause menu, Options
-    """
+    '''
 
     def __init__(self, screen: pygame.Surface, real_window_size: Point, window_size: Point = None, frame_rate: int = 30):
         super().__init__(screen, real_window_size, window_size, frame_rate)
@@ -606,7 +606,7 @@ class MenuScreen(GameScreen):
             self.buttons[self.button_index]()
 
     def draw_buttons(self, screen: pygame.Surface = None, highlight: bool = True):
-        """Draw the buttons"""
+        '''Draw the buttons'''
         if not screen:
             screen = self.screen
         for i, button in enumerate(self.buttons):
