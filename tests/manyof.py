@@ -43,10 +43,17 @@ class A:
     def add(self, a: int, b: int) -> int:
         return a + b
 
+    def __str__(self):
+        return 'This is an A object'
+
 class ManyOfUnitTest(unittest.TestCase):
+    m = ManyOf(A, A(), A(), A())
     def test_return(self):
-        m = ManyOf(A, A(), A(), A())
-        self.assertEqual(m.add(5, 6).obj_list, (11, 11, 11))
+        self.assertEqual(self.m.add(5, 6).obj_list, (11, 11, 11))
+
+    def tests_dunder(self):
+        str(self.m)
+        repr(self.m)
 
 if __name__ == '__main__':
     unittest.main()
