@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import pygame
+import pygame, unittest
 from pygame_tools import *
 from random import randint
 
@@ -39,5 +39,15 @@ class ManyOfTest(GameScreen):
         super().update()
         self.text_box.draw(self.screen)
 
+class A:
+    def add(self, a: int, b: int) -> int:
+        return a + b
+
+class ManyOfUnitTest(unittest.TestCase):
+    def test_return(self):
+        m = ManyOf(A, A(), A(), A())
+        self.assertEqual(m.add(5, 6).obj_list, (11, 11, 11))
+
 if __name__ == '__main__':
+    unittest.main()
     ManyOfTest().run()

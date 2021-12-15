@@ -2,7 +2,7 @@
 
 import pygame, math, sys
 from string import printable as _printable
-from typing import List, Type, TypeVar
+from typing import List, Type, TypeVar, Tuple
 from glob import glob
 from pygame.locals import *
 from recordclass import RecordClass
@@ -17,19 +17,21 @@ class ManyOf:
     reads methods from a given class and creates those methods in this class
     by looping over each provided object and calling that method on it
     '''
-    def __init__(self, cls: Type[T], *obj_list: List[T]):
+    def __init__(self, cls: Type[T], *obj_list: Tuple[T]):
         '''
         initialize the ManyOf class
         :cls: the type or class of the objects in obj_list
         :obj_list: the list of objects that the methods will be called on
         '''
+        if len(obj_list) < 1:
+            raise ValueError('Must pass at least one object in obj_list')
         self.obj_list = obj_list
         for method in filter(lambda x: not (x.startswith('__') and x.endswith('__')), dir(cls)):
             if not callable(getattr(cls, method)): # if the method is not a function
                 continue # move on to the next method
             def func(*args, __method_name__=method, **kwargs): # create new function
-                for obj in obj_list: # cycle over objects in list
-                    getattr(obj, __method_name__)(*args, **kwargs) # call method with matching name
+                results = [getattr(obj, __method_name__)(*args, **kwargs) for obj in obj_list]
+                return ManyOf(type(results[0]), *results)
             func.__name__ = method # rename function
             setattr(self, method, func) # save function as method
 
