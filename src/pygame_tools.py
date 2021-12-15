@@ -26,7 +26,7 @@ class ManyOf:
         if len(obj_list) < 1:
             raise ValueError('Must pass at least one object in obj_list')
         self.obj_list = obj_list
-        for method in filter(lambda x: not (x.startswith('__') and x.endswith('__')), dir(cls)):
+        for method in filter(lambda x: x != '__class__', dir(cls)):
             if not callable(getattr(cls, method)): # if the method is not a function
                 continue # move on to the next method
             def func(*args, __method_name__=method, **kwargs): # create new function
