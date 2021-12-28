@@ -199,6 +199,10 @@ class Point(RecordClass):
                 return NotImplemented
         return self.x == pos.x and self.y == pos.y
 
+    def __abs__(self) -> Point:
+        '''Returns the a Point with absolute value on x and y'''
+        return Point(abs(self.x), abs(self.y))
+
     @staticmethod
     def distance(pos1: Point, pos2: Point) -> float:
         '''takes two points and returns the distance between then'''

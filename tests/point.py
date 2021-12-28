@@ -46,6 +46,12 @@ class TestPoint(unittest.TestCase):
         self.assertTrue(Point(1, 2) != Point(2, 3))
         self.assertTrue(Point(1, 2) == Point(1, 2))
 
+    def test_abs(self):
+        self.assertTrue(abs(Point(-1, -2)), (1, 2))
+        self.assertTrue(abs(Point(3, -2)), (3, 2))
+        self.assertTrue(abs(Point(1, 1)), (1, 1))
+        self.assertTrue(abs(Point(0, -0)), (0, 0))
+
     def test_distance(self):
         self.assertEqual(Point.distance((1, 1), (2, 2)), math.sqrt(2))
 
