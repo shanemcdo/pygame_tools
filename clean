@@ -1,0 +1,2 @@
+#!/bin/sh
+rm -rf build dist */__pycache__ src/*.egg-info
