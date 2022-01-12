@@ -47,10 +47,44 @@ class TestPoint(unittest.TestCase):
         self.assertTrue(Point(1, 2) == Point(1, 2))
 
     def test_abs(self):
-        self.assertTrue(abs(Point(-1, -2)), (1, 2))
-        self.assertTrue(abs(Point(3, -2)), (3, 2))
-        self.assertTrue(abs(Point(1, 1)), (1, 1))
-        self.assertTrue(abs(Point(0, -0)), (0, 0))
+        self.assertEqual(abs(Point(-1, -2)), (1, 2))
+        self.assertEqual(abs(Point(3, -2)), (3, 2))
+        self.assertEqual(abs(Point(1, 1)), (1, 1))
+        self.assertEqual(abs(Point(0, -0)), (0, 0))
+
+    def test_rotate(self):
+        self.assertEqual(math.floor(Point(4, 4).rotate(math.pi / 2)), (-4, 4))
+
+    def test_dist(self):
+        points = [
+            Point(i, j)
+            for i in range(-10, 11)
+            for j in range(-10, 11)
+        ]
+        for i in points:
+            for j in points:
+                a = Point.distance(i, j)
+                b = i.dist(j)
+                c = j.dist(i)
+                self.assertEqual(a, b)
+                self.assertEqual(b, c)
+                self.assertEqual(c, a)
+
+    def test_dist_from_line(self):
+        points = [
+            Point(i, j)
+            for i in range(-5, 6)
+            for j in range(-5, 6)
+        ]
+        for i in points:
+            for j in points:
+                for k in points:
+                    a = Point.distance_from_line(i, j, k)
+                    b = k.dist_from_line(i, j)
+                    c = k.dist_from_line(j, i)
+                    self.assertEqual(a, b)
+                    self.assertEqual(b, c)
+                    self.assertEqual(c, a)
 
     def test_distance(self):
         self.assertEqual(Point.distance((1, 1), (2, 2)), math.sqrt(2))

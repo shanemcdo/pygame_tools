@@ -214,9 +214,13 @@ class Point(RecordClass):
             center = Point(0, 0)
         elif not isinstance(center, Point):
             center = Point._make(center)
-        # TODO: do stuff to rotate around the center
+        pos = self - center
+        return center + Point(
+            pos.x * math.cos(angle) - pos.y * math.sin(angle),
+            pos.y * math.cos(angle) + pos.x * math.sin(angle)
+        )
 
-    def dist_from(self, pos: Point) -> float:
+    def dist(self, pos: Point) -> float:
         '''
         calculate distance between self and pos
         :pos: position to calculate distance from
@@ -266,7 +270,10 @@ class Point(RecordClass):
             end = Point._make(end)
         if not isinstance(point, Point):
             point = Point._make(point)
-        return abs((end.x - start.x) * (start.y - point.y) - (start.x - point.x) * (end.y - start.y)) / math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
+        try:
+            return abs((end.x - start.x) * (start.y - point.y) - (start.x - point.x) * (end.y - start.y)) / math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
+        except ZeroDivisionError:
+            return Point.distance(start, point)
 
 def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
     '''Copy part of a pygame.Surface'''
