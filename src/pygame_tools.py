@@ -2,7 +2,8 @@
 
 import pygame, math, sys
 from string import printable as _printable
-from typing import List, Type, TypeVar, Tuple
+#TODO: don't import List or Tuple
+from typing import List, Type, TypeVar, Tuple, Optional
 from glob import glob
 from pygame.locals import *
 from recordclass import RecordClass
@@ -203,9 +204,45 @@ class Point(RecordClass):
         '''Returns the a Point with absolute value on x and y'''
         return Point(abs(self.x), abs(self.y))
 
+    def rotate(self, angle: float, center: Optional[Point] = None) -> Point:
+        '''
+        rotates a point around center
+        :angle: angle which to rotate, radians
+        :center:
+        '''
+        if center is None:
+            center = Point(0, 0)
+        elif not isinstance(center, Point):
+            center = Point._make(center)
+        # TODO: do stuff to rotate around the center
+
+    def dist_from(self, pos: Point) -> float:
+        '''
+        calculate distance between self and pos
+        :pos: position to calculate distance from
+        '''
+        #TODO: TEST THIS
+        return Point.distance(self, pos)
+
+    def dist_from_line(self, start: Point, end: Point) -> float:
+        '''
+        returns distance between self and line
+        :start: the start of the line
+        :end: the end of the line
+        :returns: the distance between the line and self
+        '''
+        #TODO: TEST THIS
+        return Point.distance_from_line(start, end, self)
+
     @staticmethod
     def distance(pos1: Point, pos2: Point) -> float:
-        '''takes two points and returns the distance between then'''
+        '''
+        takes two points and returns the distance between then
+        static method
+        :pos1: first point
+        :pos2: second point
+        :returns: distance between pos1 and pos2
+        '''
         if not isinstance(pos1, Point):
             pos1 = Point._make(pos1)
         if not isinstance(pos2, Point):
@@ -217,6 +254,7 @@ class Point(RecordClass):
         '''
         measure the distance between a point and a line
         used https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line as a reference
+        static method
         :start: the start of the line
         :end: the end of the line
         :point: the point to measure
