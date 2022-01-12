@@ -2,8 +2,7 @@
 
 import pygame, math, sys
 from string import printable as _printable
-#TODO: don't import List or Tuple
-from typing import List, Type, TypeVar, Tuple, Optional
+from typing import Type, TypeVar, Optional
 from glob import glob
 from pygame.locals import *
 from recordclass import RecordClass
@@ -18,7 +17,7 @@ class ManyOf:
     reads methods from a given class and creates those methods in this class
     by looping over each provided object and calling that method on it
     '''
-    def __init__(self, cls: Type[T], *obj_list: Tuple[T]):
+    def __init__(self, cls: Type[T], *obj_list: tuple[T]):
         '''
         initialize the ManyOf class
         :cls: the type or class of the objects in obj_list
@@ -234,7 +233,6 @@ class Point(RecordClass):
         calculate distance between self and pos
         :pos: position to calculate distance from
         '''
-        #TODO: TEST THIS
         return Point.distance(self, pos)
 
     def dist_from_line(self, start: Point, end: Point) -> float:
@@ -244,7 +242,6 @@ class Point(RecordClass):
         :end: the end of the line
         :returns: the distance between the line and self
         '''
-        #TODO: TEST THIS
         return Point.distance_from_line(start, end, self)
 
     @staticmethod
@@ -290,7 +287,7 @@ def clip_surface(surface: pygame.Surface, rect: Rect) -> pygame.Surface:
     cropped.blit(surface, (0, 0), rect)
     return cropped
 
-def get_bezier_curve_points(p0: Point, p1: Point, p2: Point, density: int) -> List[Point]:
+def get_bezier_curve_points(p0: Point, p1: Point, p2: Point, density: int) -> list[Point]:
     '''
     calculates the points for a quadratic bezier curve
     :p0: the first point in the bezier curve
@@ -717,7 +714,7 @@ class TextBox:
     '''
     def __init__(
             self,
-            text: List[str],
+            text: list[str],
             rect: pygame.Rect,
             bg_color: pygame.Color = 'grey',
             text_color: pygame.Color = 'black',
