@@ -7,7 +7,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name="pygame-tools",
-    version='0.1.2',
+    version='0.1.3',
     author="KermitPurple (Shane McDonough)",
     description='A package to make creating pygame applications much easier',
     long_description_content_type="text/markdown",
