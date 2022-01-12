@@ -206,9 +206,9 @@ class Point(RecordClass):
 
     def rotate(self, angle: float, center: Optional[Point] = None) -> Point:
         '''
-        rotates a point around center
+        rotates a point clockwise around center
         :angle: angle which to rotate, radians
-        :center:
+        :center: the point to rotate around
         '''
         if center is None:
             center = Point(0, 0)
@@ -219,6 +219,15 @@ class Point(RecordClass):
             pos.x * math.cos(angle) - pos.y * math.sin(angle),
             pos.y * math.cos(angle) + pos.x * math.sin(angle)
         )
+    rotate_cw = rotate
+
+    def rotate_ccw(self, angle: float, center: Optional[Point] = None) -> Point:
+        '''
+        rotates a point counter-clockwise around center
+        :angle: angle which to rotate, radians
+        :center: the point to rotate around
+        '''
+        return self.rotate(-angle, center)
 
     def dist(self, pos: Point) -> float:
         '''
