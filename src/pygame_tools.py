@@ -759,15 +759,17 @@ class TextBox:
         '''
         y = 0
         text = self.text[self.text_index]
-        text_len = len(text)
         while text:
+            text_len = len(text)
             i = 1
-            while self.font.size(text[:i])[0] < self.rect.w - self.padding.x * 2 and i < text_len:
+            while self.font.size(text[:i])[0] < self.rect.w - self.padding.x * 2 and i < text_len and text[i] != '\n':
                 i += 1
-            if i < text_len:
+            if i < text_len and text[i] != '\n':
                 new_i = text.rfind(' ', 0, i) + 1 # attempt to find the farthest space
                 if new_i: # space is found
                     i = new_i # use found index for word wrapping
+            elif i < text_len and text[i] == '\n':
+                text = text.replace('\n', '', 1)
             size = Point(*self.font.size(text[:i]))
             screen.blit(
                 self.font.render(text[:i], True, self.text_color),
