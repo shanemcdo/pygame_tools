@@ -29,7 +29,15 @@ class ParticleTest(GameScreen):
 
     def add_particle(self):
         color_val = randint(150, 255)
-        self.particles.append(Particle(self.center, randint(4, 12), (color_val, color_val, color_val), (randint(-3, 3), randint(-3, 3)), None, 1, randint(2, 6)))
+        self.particles.append(Particle(
+            self.center,
+            randint(4, 12),
+            (color_val, color_val, color_val),
+            (randint(-3, 3), randint(-3, 3)),
+            None,
+            1,
+            randint(2, 6)
+        ))
 
 if __name__ == '__main__':
     ParticleTest().run()
