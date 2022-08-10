@@ -66,7 +66,6 @@ class VisualNovelTest(MenuScreen):
         pygame.init()
         size = Point(600, 600)
         super().__init__(pygame.display.set_mode(size), size, (size.x // 2, size.y // 2))
-        self.set_state(State.CHARACTER_TALKING)
         self.font = pygame.font.SysFont(pygame.font.get_default_font(), 20)
         self.center = Point(self.window_size.x // 2, self.window_size.y // 2)
         self.text_box_rect = Rect(10, self.center.y, self.window_size.x - 20, self.center.y - 10)
@@ -75,11 +74,16 @@ class VisualNovelTest(MenuScreen):
             self.text_box_rect,
             font = self.font,
         )
-        self.update_text_box()
+        self.set_state(State.CHARACTER_TALKING)
 
     def set_state(self, state: State):
         self.state = state
         self.speaker = self.state.get_speaker()
+        match self.speaker:
+            case Speaker.PLAYER:
+                self.update_buttons()
+            case Speaker.CHARACTER:
+                self.update_text_box()
 
     def update_buttons(self):
         table = PLAYER_STATES_TABLE[self.state]
@@ -100,14 +104,13 @@ class VisualNovelTest(MenuScreen):
         lines, self.next_state = CHARACTER_STATES_TABLE[self.state]
         self.text_box = TextBox(
             lines,
-            self.text_box.rect,
+            self.text_box_rect,
             font = self.font,
         )
 
     def respond(self, response: any) -> Callable[[], None]:
         def f():
             self.set_state(response)
-            self.update_text_box()
         return f
 
     def key_down(self, event: pygame.event.Event):
@@ -116,7 +119,6 @@ class VisualNovelTest(MenuScreen):
                 self.text_box.update()
                 if self.text_box.done:
                     self.set_state(self.next_state)
-                    self.update_buttons()
             case Speaker.PLAYER:
                 super().key_down(event)
 
