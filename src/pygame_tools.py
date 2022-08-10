@@ -673,6 +673,8 @@ class MenuScreen(GameScreen):
         self.button_index = 0
 
     def key_down(self, event: pygame.event.Event):
+        if len(self.buttons) < 1:
+            return
         if event.key == K_UP or event.key == K_RIGHT or event.key == K_DOWN or event.key == K_LEFT:
             if event.key == K_DOWN or event.key == K_RIGHT:
                 self.button_index += 1
