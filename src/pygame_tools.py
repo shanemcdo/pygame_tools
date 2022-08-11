@@ -333,7 +333,7 @@ class Animation:
 
         Example().run()
     '''
-    def __init__(self, glob_path: str, frame_data: [int], repititions: int = None):
+    def __init__(self, glob_path: str, frame_data: list[int], repititions: int = None):
         '''
         :glob_path: the path that glob is called on.
             e.g.: 'assets/animations/*' to get every file in assets/animations
@@ -372,7 +372,7 @@ class Animation:
         self.frame_index = 0
         self.frames_until_next = self.frames[0][1]
 
-    def load(self, glob_path: str, frame_data):
+    def load(self, glob_path: str, frame_data: list[int]):
         '''
         Load animations from a glob path
         :glob_path: the path that glob is called on.
