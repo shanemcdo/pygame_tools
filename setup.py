@@ -8,7 +8,7 @@ with open('README.md', 'r') as f:
 setup(
     name="pygame-tools",
     version='0.1.5',
-    author="KermitPurple (Shane McDonough)",
+    author="shanemcdo (Shane McDonough)",
     description='A package to make creating pygame applications much easier',
     long_description_content_type="text/markdown",
     long_description=long_description,
@@ -16,6 +16,6 @@ setup(
     package_dir={'': 'src'},
     install_requires=['pygame', 'recordclass'],
     keywords='pygame 2d-game video-game',
-    url="https://github.com/KermitPurple/pygame_tools",
+    url="https://github.com/shanemcdo/pygame_tools",
     license='MIT',
 )
