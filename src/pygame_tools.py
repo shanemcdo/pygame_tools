@@ -472,7 +472,8 @@ class Button:
             border_radius: int = 0,
             border_size: int = 0,
             border_color: Color = (0, 0, 0),
-            clicked_color: Color = (100, 100, 100)
+            clicked_color: Color = (100, 100, 100),
+            antialias: bool = True
             ):
         self.action = action
         self.text = text
@@ -486,6 +487,7 @@ class Button:
         self.border_size = border_size
         self.border_color = border_color
         self.clicked_color = clicked_color
+        self.antialias = antialias
         self.clicked = False
         self.highlight = False
 
@@ -494,7 +496,7 @@ class Button:
         self.clicked = False
         if self.border_size > 0:
             pygame.draw.rect(screen, self.border_color, self.rect, self.border_size, self.border_radius)
-        text_obj = self.font.render(self.text, True, self.font_color)
+        text_obj = self.font.render(self.text, self.antialias, self.font_color)
         text_size = text_obj.get_size()
         screen.blit(text_obj, (self.rect.centerx - text_size[0] / 2, self.rect.centery - text_size[1] / 2))
 
